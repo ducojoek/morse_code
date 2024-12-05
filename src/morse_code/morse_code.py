@@ -1,3 +1,8 @@
+import time
+
+import pyvisa
+from arduino_controller import ArduinoVISADevice
+
 list_text = [
     "a",
     "b",
@@ -83,4 +88,44 @@ def word_to_morse(word):
     return signaal
 
 
-word_to_morse("hello world")
+def signaal_uitzenden():
+    morse = word_to_morse("hallo wereld")
+    eind_signaal = []
+    # print(morse)
+    for a in range(0, len(morse)):
+        signaal = list(f"{morse[a]}")
+        eind_signaal.append(signaal)
+    # print(eind_signaal)
+    return eind_signaal
+
+
+def signal_on_off(tijd):
+    experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
+    experiment.set_output_value(1023)
+    tijd = int(tijd)
+    print(tijd)
+    time.sleep(int(tijd))
+    experiment.set_output_value(0)
+    time.sleep(0.25)
+
+
+# ports = list_resources
+# # print(ports)
+# rm = pyvisa.ResourceManager("@py")
+# ports = rm.list_resources()
+# print(ports)
+eind_signaal = signaal_uitzenden()
+# print(eind_signaal)
+for unit in range(0, len(eind_signaal)):
+    for a in range(0, len(eind_signaal[unit])):
+        signal_on_off(eind_signaal[unit][a])
+    time.sleep(2)
+    print(0)
+
+
+# experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
+# experiment.set_output_value(1023)
+# waarde = experiment.get_output_value()
+# print(waarde)
+# identificatie = experiment.get_identification()
+# print(identificatie)
