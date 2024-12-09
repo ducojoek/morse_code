@@ -111,13 +111,16 @@ def signaal_uitzenden(text):
 
 
 def signal_on_off(tijd):
-    experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
-    experiment.set_output_value(1023)
-    tijd = int(tijd)
-    print(tijd)
-    time.sleep(int(tijd))
-    experiment.set_output_value(0)
-    time.sleep(0.25)
+    if int(tijd) < 3:
+        experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
+        experiment.set_output_value(1023)
+        tijd = int(tijd)
+        print(tijd)
+        time.sleep(int(tijd))
+        experiment.set_output_value(0)
+        time.sleep(0.25)
+    else:
+        time.sleep(3)
 
     # word_to_morse("hallo wereld")
     # ports = list_resources
@@ -138,7 +141,7 @@ def run(text):
     print("klaar!")
 
 
-run("wereld")
+run("hallo wereld")
 
 
 # experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
