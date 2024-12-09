@@ -141,7 +141,8 @@ def run(text):
     print("klaar!")
 
 
-# run("hallo wereld")
+if __name__ == "__main__":
+    run("geweldig het lijkt te werken ")
 
 
 # experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
