@@ -16,11 +16,10 @@ def word():
     space = 0
     above_crucial_count = 0
     below_crucial_count = 0
-    one_three = 0
 
-    dot_len = 10
-    dash_len = 30
-    let_len = 40
+    dot_len = 1
+    dash_len = 8
+    let_len = 8
 
     while space == 0:
         U = int(lamp.get_input_value(channel=1)) - int(lamp.get_input_value(channel=2))
@@ -28,7 +27,6 @@ def word():
         if U < crucial_value:
             above_crucial_count += 1
             below_crucial_count = 0
-            one_three = 0
 
         if U > crucial_value:
             below_crucial_count += 1
@@ -50,7 +48,7 @@ def word():
 
 
 t = 0
-space_len = 250
+space_len = 50
 below_count = 0
 let_list = []
 while t < 1000:
