@@ -23,7 +23,7 @@ def word():
 
     while space == 0:
         U = int(lamp.get_input_value(channel=1)) - int(lamp.get_input_value(channel=2))
-        print(U)
+
         if U < crucial_value:
             above_crucial_count += 1
             below_crucial_count = 0
@@ -48,7 +48,7 @@ def word():
 
 
 t = 0
-space_len = 50
+space_len = 40
 below_count = 0
 let_list = []
 while t < 1000:
@@ -60,7 +60,6 @@ while t < 1000:
             let_list.append(str(3))
         below_count = 0
         let_list.append(word())
-        print(let_list)
     time.sleep(0.01)
 
     if (

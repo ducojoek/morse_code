@@ -51,7 +51,7 @@ class ArduinoVISADevice:
         Returns:
             output value of CH 0 in bit
         """
-        return self.device.query(f"OUT:CH0?")
+        return self.device.query("OUT:CH0?")
 
     def get_input_value(self, channel):
         """returns voltage of channel "channel" in bit
