@@ -1,9 +1,11 @@
 import time
 
 import pyvisa
-from arduino_controller import ArduinoVISADevice
+
+from morse_code.arduino_controller import ArduinoVISADevice
 
 list_text = [
+    "",
     "a",
     "b",
     "c",
@@ -34,6 +36,7 @@ list_text = [
     "  ",
 ]
 list_morse = [
+    "0",
     "12",
     "2111",
     "2121",
@@ -61,7 +64,7 @@ list_morse = [
     "1211",
     "1122",
     "3",
-    "33",
+    "6",
 ]
 
 
@@ -88,8 +91,16 @@ def word_to_morse(word):
     return signaal
 
 
-def signaal_uitzenden():
-    morse = word_to_morse("hallo wereld")
+def morse_to_word(morse):
+    text = ""
+    for unit in range(0, len(morse)):
+        letter = translate_morse_to_text(morse[unit])
+        text += f"{letter}"
+    return text
+
+
+def signaal_uitzenden(text):
+    morse = word_to_morse(f"{text}")
     eind_signaal = []
     # print(morse)
     for a in range(0, len(morse)):
@@ -108,19 +119,34 @@ def signal_on_off(tijd):
     experiment.set_output_value(0)
     time.sleep(0.25)
 
+    # word_to_morse("hallo wereld")
+    # ports = list_resources
+    # # print(ports)
+    # rm = pyvisa.ResourceManager("@py")
+    # ports = rm.list_resources()
+    # print(ports)
 
-# ports = list_resources
-# # print(ports)
-# rm = pyvisa.ResourceManager("@py")
-# ports = rm.list_resources()
-# print(ports)
-eind_signaal = signaal_uitzenden()
-# print(eind_signaal)
-for unit in range(0, len(eind_signaal)):
-    for a in range(0, len(eind_signaal[unit])):
-        signal_on_off(eind_signaal[unit][a])
-    time.sleep(2)
-    print(0)
+
+def run(text):
+    eind_signaal = signaal_uitzenden(text)
+    # # print(eind_signaal)
+
+    for unit in range(0, len(eind_signaal)):
+        for a in range(0, len(eind_signaal[unit])):
+            signal_on_off(eind_signaal[unit][a])
+        time.sleep(2)
+    print("klaar!")
+
+
+run("wereld")
+
+
+# experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
+# experiment.set_output_value(1023)
+# text = morse_to_word(
+#     ["1111", "12", "1211", "1211", "222", "3", "122", "1", "121", "1", "1211", "211"]
+# )
+# print(text)
 
 
 # experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
@@ -129,3 +155,6 @@ for unit in range(0, len(eind_signaal)):
 # print(waarde)
 # identificatie = experiment.get_identification()
 # print(identificatie)
+
+
+# ['1111', '12', '1211', '1211', '222', '3', '122', '1', '121', '1', '1211', '211']# ['1111', '12', '1211', '1211', '222', '3', '122', '1', '121', '1', '1211', '211']
