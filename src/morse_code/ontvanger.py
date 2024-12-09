@@ -1,6 +1,7 @@
 import time
 
 from morse_code.arduino_controller import ArduinoVISADevice
+from morse_code.morse_cod import morse_to_word
 
 lamp = ArduinoVISADevice(ports="ASRL12::INSTR")
 
@@ -12,7 +13,6 @@ def word():
     # en returned een lijst met
 
     word = str(0)
-    word_list = []
     space = 0
     above_crucial_count = 0
     below_crucial_count = 0
@@ -20,8 +20,7 @@ def word():
 
     dot_len = 10
     dash_len = 30
-    let_len = 20
-    space_len = 40
+    let_len = 40
 
     while space == 0:
         U = int(lamp.get_input_value(channel=1)) - int(lamp.get_input_value(channel=2))
@@ -42,10 +41,7 @@ def word():
                 word += str(2)
                 print("dash")
 
-            if below_crucial_count >= let_len and one_three < 1:
-                one_three += 1
-
-            if below_crucial_count >= space_len:
+            if below_crucial_count >= let_len:
                 return word
 
             above_crucial_count = 0
@@ -54,13 +50,29 @@ def word():
 
 
 t = 0
+space_len = 250
+below_count = 0
 let_list = []
-while t < 10000:
+while t < 1000:
     if (
         int(lamp.get_input_value(channel=1)) - int(lamp.get_input_value(channel=2))
         < crucial_value
     ):
+        if below_count > space_len:
+            let_list.append(str(3))
+        below_count = 0
         let_list.append(word())
         print(let_list)
     time.sleep(0.01)
+
+    if (
+        int(lamp.get_input_value(channel=1)) - int(lamp.get_input_value(channel=2))
+        > crucial_value
+    ):
+        below_count += 1
+
     t += 1
+
+let_list = [int(i) for i in let_list]
+let_list = [str(r) for r in let_list]
+print(morse_to_word(let_list))

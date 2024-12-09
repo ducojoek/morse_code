@@ -141,7 +141,7 @@ def run(text):
     print("klaar!")
 
 
-run("hallo wereld")
+# run("hallo wereld")
 
 
 # experiment = ArduinoVISADevice(ports="ASRL4::INSTR")
